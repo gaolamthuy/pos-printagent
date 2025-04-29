@@ -1,0 +1,14 @@
+{
+  "pollingIntervalMs": 2000,
+  "chromiumPath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "printers": {
+    "printer1": "Canon A5",
+    "printer2": "Canon A4",
+    "printer3": "Xprinter 80mm"
+  },
+  "formats": {
+    "printer1": "A5",
+    "printer2": "A4",
+    "printer3": { "width": "80mm", "height": "120mm" }
+  }
+}
