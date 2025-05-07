@@ -1,14 +1,23 @@
 {
   "pollingIntervalMs": 2000,
   "chromiumPath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
-  "printers": {
-    "printer1": "Canon A5",
-    "printer2": "Canon A4",
-    "printer3": "Xprinter 80mm"
+  "routes": {
+    "invoice": "printer1",
+    "label": "printer2",
+    "default": "printer1"
   },
-  "formats": {
-    "printer1": "A5",
-    "printer2": "A4",
-    "printer3": { "width": "80mm", "height": "120mm" }
+  "printers": {
+    "printer1": {
+      "name": "Canon LBP2900",
+      "format": "A5"
+    },
+    "printer2": {
+      "name": "DL02",
+      "format": { "width": "80mm", "height": "120mm" }
+    },
+    "printer3": {
+      "name": "Xprinter 80mm",
+      "format": { "width": "80mm", "height": "120mm" }
+    }
   }
 }
