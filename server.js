@@ -193,7 +193,16 @@ function askStartupMode() {
   console.log(` 1. ${chalk.yellow("Start Print Agent Server")}`);
   console.log(` 2. ${chalk.cyan("Test Print Invoice")}`);
   console.log(` 3. ${chalk.cyan("Test Print Label")}`);
-  rl.question("\nEnter your choice (1/2/3): ", async (answer) => {
+  console.log(chalk.gray(" Auto-start in 30s if no input...\n"));
+
+  const timeout = setTimeout(() => {
+    rl.close();
+    console.log(chalk.yellow("No input, auto starting server..."));
+    startServer();
+  }, 30000); // 30s
+
+  rl.question("Enter your choice (1/2/3): ", async (answer) => {
+    clearTimeout(timeout);
     rl.close();
     if (answer === "1") return startServer();
     if (answer === "2") return await runTest("invoice");
@@ -202,5 +211,6 @@ function askStartupMode() {
     process.exit(1);
   });
 }
+
 
 askStartupMode();
