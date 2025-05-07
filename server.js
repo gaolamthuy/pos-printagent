@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const puppeteer = require("puppeteer-core");
 const printer = require("pdf-to-printer");
 const chalk = require("chalk");
@@ -22,6 +23,7 @@ const SETTINGS = {
 };
 
 app.use(express.json());
+app.use(cors());
 
 let browser;
 let isPrinting = false;
@@ -211,6 +213,5 @@ function askStartupMode() {
     process.exit(1);
   });
 }
-
 
 askStartupMode();
