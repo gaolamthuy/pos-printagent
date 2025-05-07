@@ -6,7 +6,7 @@ const chalk = require("chalk");
 const logDir = path.join(__dirname, "logs");
 if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
 
-// Optional: clean up logs older than N days
+// Auto cleanup logs > N ngày
 const RETAIN_DAYS = 7;
 fs.readdirSync(logDir).forEach((file) => {
   const filePath = path.join(logDir, file);
@@ -20,15 +20,19 @@ function getLogFilePath() {
   return path.join(logDir, `${today}.log`);
 }
 
-function logToFile(level, message) {
-  const time = new Date().toTimeString().split(" ")[0];
-  const line = `[${time}] ${level.toUpperCase()} - ${message}\n`;
+function formatTime() {
+  return new Date().toLocaleTimeString("en-GB", { hour12: false });
+}
+
+function writeToFile(level, message) {
+  const line = `[${formatTime()}] ${level.toUpperCase()} - ${message}\n`;
   fs.appendFileSync(getLogFilePath(), line);
 }
 
 function log(level, color, message) {
-  console.log(chalk[color](`[${level.toUpperCase()}] ${message}`));
-  logToFile(level, message);
+  const colored = chalk[color](`[${level.toUpperCase()}] ${message}`);
+  console.log(colored);
+  writeToFile(level, message);
 }
 
 module.exports = {
@@ -36,5 +40,5 @@ module.exports = {
   success: (msg) => log("success", "green", msg),
   warn: (msg) => log("warn", "yellow", msg),
   error: (msg) => log("error", "red", msg),
-  raw: logToFile,
+  raw: writeToFile,
 };
