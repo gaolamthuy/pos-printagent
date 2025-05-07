@@ -1,5 +1,4 @@
 {
-  "pollingIntervalMs": 2000,
   "chromiumPath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "routes": {
     "invoice": "printer1",
@@ -13,11 +12,17 @@
     },
     "printer2": {
       "name": "DL02",
-      "format": { "width": "80mm", "height": "120mm" }
+      "format": {
+        "width": "100mm",
+        "height": "75mm"
+      }
     },
     "printer3": {
       "name": "Xprinter 80mm",
-      "format": { "width": "80mm", "height": "120mm" }
+      "format": {
+        "width": "80mm",
+        "height": "120mm"
+      }
     }
   }
 }

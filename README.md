@@ -40,6 +40,7 @@ Tự động ghi log mỗi ngày tại thư mục `logs/`. Log cũ hơn 7 ngày 
 
 ```json
 {
+  "print_agent_id": "id_abc",
   "doc_type": "invoice",
   "doc_ref": {
     "code": "HD057559"
@@ -49,6 +50,7 @@ Tự động ghi log mỗi ngày tại thư mục `logs/`. Log cũ hơn 7 ngày 
 
 ```json
 {
+  "print_agent_id": "id_abc",
   "doc_type": "label",
   "doc_ref": {
     "code": "2021101",

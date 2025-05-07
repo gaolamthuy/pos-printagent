@@ -52,7 +52,12 @@ async function renderAndPrint(url, printerName, format) {
   await page.goto(url, { waitUntil: "networkidle0", timeout: 10000 });
 
   const tmpPath = path.join(os.tmpdir(), `print-${Date.now()}.pdf`);
-  const pdfOptions = { path: tmpPath, printBackground: true };
+  const pdfOptions = {
+    path: tmpPath,
+    printBackground: true,
+    scale: 1,
+    preferCSSPageSize: true,
+  };
 
   if (typeof format === "string") {
     pdfOptions.format = format;
@@ -66,7 +71,8 @@ async function renderAndPrint(url, printerName, format) {
 
   await printer.print(tmpPath, {
     printer: printerName,
-    options: ["-print-settings", "fit"],
+    // options: ["-orientation", "portrait"],
+    options: ["-print-settings", "noscale"],
   });
 
   fs.unlinkSync(tmpPath);
@@ -192,6 +198,7 @@ async function runTest(printerKey) {
 
     await printer.print(tmpPdf, {
       printer: printerConfig.name,
+      // options: ["-orientation", "portrait"],
       options: ["-print-settings", "fit"],
     });
 
