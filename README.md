@@ -1,11 +1,11 @@
 # 🖨️ GLT POS Print Agent
 
-Tác vụ in hóa đơn / tem nhãn cho hệ thống POS, sử dụng ExpressJS + Puppeteer + pdf-to-printer.
+Tác vụ in hóa đơn / tem nhãn cho hệ thống POS, sử dụng Puppeteer + pdf-to-printer.
 
 ## 🚀 Cài đặt nhanh
 
 ```bash
-git clone https://github.com/yourname/glt-nodejs-printagent
+git clone https://github.com/gaolamthuy/glt-nodejs-printagent
 cd glt-nodejs-printagent
 npm install
 ```
