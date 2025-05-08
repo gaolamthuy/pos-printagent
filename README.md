@@ -1,61 +1,126 @@
-# 🖨️ GLT POS Print Agent
 
-Tác vụ in hóa đơn / tem nhãn cho hệ thống POS, sử dụng Puppeteer + pdf-to-printer.
+# POS Print Agent
 
-## 🚀 Cài đặt nhanh
+A lightweight print job listener for POS systems. It polls a backend server for new print jobs and sends them to configured printers.
+
+---
+
+## 🚀 Setup
+
+### 1. Clone the project
 
 ```bash
-git clone https://github.com/gaolamthuy/glt-nodejs-printagent
-cd glt-nodejs-printagent
+git clone https://github.com/gaolamthuy/pos-printagent.git
+cd pos-printagent
+```
+
+### 2. Install dependencies
+
+```
 npm install
 ```
 
-## ⚙️ Cấu hình
+### 3. Configure printers
 
-- `.env` file:
-- `config.json`: cấu hình máy in và định dạng (đã có sẵn)
+Edit the `config.json` file to define your printer names and formats:
 
-## ▶️ Chạy app
+```
+{
+  "pollingIntervalMs": 2000,
+  "chromiumPath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "printers": {
+    "invoice-k80": "HP LaserJet P15",
+    "invoice-a4": "XP-80C",
+    "label": "XP-350B"
+  },
+  "formats": {
+    "invoice-k80": "A5",
+    "invoice-a4": "A4",
+    "label": { "width": "75mm", "height": "100mm" }
+  }
+}
+```
 
-```bash
+----------
+
+## 🔁 Run manually
+
+```
 npm start
 ```
 
-Chọn:
+----------
 
-1. Start server để nhận job in.
-2. Test print hóa đơn.
-3. Test print nhãn.
+## ⚙️ Install as Windows Service (Auto Start)
 
-## 📂 Logs
+### 1. Install `node-windows` globally
 
-Tự động ghi log mỗi ngày tại thư mục `logs/`. Log cũ hơn 7 ngày sẽ tự xoá.
-
-## 🛠️ Phụ thuộc
-
-- Chrome / Chromium (cấu hình đường dẫn trong `config.json`)
-- Máy in cài trên Windows (kiểm tra tên đúng)
-
-## ℹ️ Payload ví dụ gửi đến `/print`:
-
-```json
-{
-  "print_agent_id": "id_abc",
-  "doc_type": "invoice",
-  "doc_ref": {
-    "code": "HD057559"
-  }
-}
+```
+npm install -g node-windows
 ```
 
-```json
-{
-  "print_agent_id": "id_abc",
-  "doc_type": "label",
-  "doc_ref": {
-    "code": "2021101",
-    "quantity": 2,
-    "copies": 3
-  }
-}
+### 2. Create `install-service.js`
+
+This script automatically installs and starts the print agent as a Windows Service:
+
 ```
+const path = require('path');
+const os = require('os');
+const Service = require('node-windows').Service;
+
+const userHome = os.homedir();
+
+const svc = new Service({
+  name: 'POS PrintAgent',
+  description: 'Auto-start POS Print Agent',
+  script: path.join(userHome, 'pos-printagent', 'index.js'),
+  nodeOptions: [
+    '--harmony',
+    '--max_old_space_size=4096'
+  ]
+});
+
+svc.on('install', () => {
+  console.log("Service installed. Starting...");
+  svc.start();
+});
+
+svc.install();
+```
+
+> ⚠️ Make sure your app is cloned to `C:\Users\<yourname>\pos-printagent` or adjust the path accordingly.
+
+### 3. Run the script to install the service
+
+```
+node install-service.js
+```
+
+----------
+
+## 🧯 Uninstall Service (Optional)
+
+```
+svc.uninstall();
+```
+
+Or run a similar `uninstall-service.js` file with:
+
+```
+svc.on('uninstall', () => {
+  console.log('Service uninstalled.');
+});
+svc.uninstall();
+```
+
+----------
+
+## 🖨️ Supported Printers
+
+Make sure the printer names in `config.json` match your **Windows printer names**. You can check them in `Control Panel > Printers`.
+
+----------
+
+## 📄 License
+
+MIT
